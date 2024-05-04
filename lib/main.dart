@@ -53,6 +53,7 @@ class HomePageState extends State<HomePage> {
     return FutureBuilder<List<String>>(
       future: fetchDogBreeds(),
       builder: (context, snapshot) {
+        //LOADING SCREEN
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
             child: SpinKitFadingCircle(
@@ -60,9 +61,33 @@ class HomePageState extends State<HomePage> {
               size: 50.0,
             ),
           );
-        } else if (snapshot.hasError) {
-          return Text("Error: ${snapshot.error}");
-        } else {
+        }
+        //ERROR DIALOG
+        else if (snapshot.hasError) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: const Text('Oops!'),
+                  content: Text(
+                      'Sorry for the inconvenience. Error: ${snapshot.error}'),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          });
+          return Container();
+        }
+        //DOG BREEDS LIST
+        else {
           return ListView.builder(
             itemCount: snapshot.data?.length ?? 0,
             itemBuilder: (context, index) {
