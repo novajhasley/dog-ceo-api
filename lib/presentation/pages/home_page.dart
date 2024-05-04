@@ -29,6 +29,16 @@ class HomePageState extends State<HomePage> {
     }
   }
 
+  Future<String> fetchImage(String breed) async {
+    final imageResponse = await http
+        .get(Uri.parse('https://dog.ceo/api/breed/$breed/images/random'));
+    if (imageResponse.statusCode == 200) {
+      return json.decode(imageResponse.body)['message'];
+    } else {
+      throw Exception('Failed to load image for breed $breed');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<String>>(
@@ -72,16 +82,36 @@ class HomePageState extends State<HomePage> {
           return ListView.builder(
             itemCount: snapshot.data?.length ?? 0,
             itemBuilder: (context, index) {
-              return ListTile(
-                title: Text(snapshot.data![index]),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) =>
-                          DogBreedPage(breed: snapshot.data![index]),
-                    ),
-                  );
+              return FutureBuilder<String>(
+                future: fetchImage(snapshot.data![index]),
+                builder: (context, imageSnapshot) {
+                  if (imageSnapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return ListTile(
+                      leading: const CircularProgressIndicator(),
+                      title: Text(snapshot.data![index]),
+                    );
+                  } else if (imageSnapshot.hasError) {
+                    return ListTile(
+                      leading: const Icon(Icons.error),
+                      title: Text(snapshot.data![index]),
+                    );
+                  } else {
+                    return ListTile(
+                      leading: Image.network(imageSnapshot.data!),
+                      title: Text(snapshot.data![index]),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => DogBreedPage(
+                                breed: snapshot.data![index],
+                                image: imageSnapshot.data!),
+                          ),
+                        );
+                      },
+                    );
+                  }
                 },
               );
             },
