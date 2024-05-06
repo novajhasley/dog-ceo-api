@@ -1,7 +1,6 @@
+import 'package:dog_ceo_api/data/services/dog_api_service.dart';
 import 'package:dog_ceo_api/presentation/pages/dog_breed_page.dart';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomePage extends StatefulWidget {
@@ -12,37 +11,12 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  Future<List<String>> fetchDogBreeds() async {
-    final response =
-        await http.get(Uri.parse('https://dog.ceo/api/breeds/list/all'));
-
-    try {
-      if (response.statusCode == 200) {
-        var data = json.decode(response.body);
-        var breeds = data['message'].keys.toList().cast<String>();
-        return breeds;
-      } else {
-        throw Exception('Failed to load dog breeds');
-      }
-    } catch (e) {
-      throw Exception('Failed to parse dog breeds: $e');
-    }
-  }
-
-  Future<String> fetchImage(String breed) async {
-    final imageResponse = await http
-        .get(Uri.parse('https://dog.ceo/api/breed/$breed/images/random'));
-    if (imageResponse.statusCode == 200) {
-      return json.decode(imageResponse.body)['message'];
-    } else {
-      throw Exception('Failed to load image for breed $breed');
-    }
-  }
+  final DogApiService apiService = DogApiService();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<String>>(
-      future: fetchDogBreeds(),
+      future: apiService.fetchDogBreeds(),
       builder: (context, snapshot) {
         //LOADING SCREEN
         if (snapshot.connectionState == ConnectionState.waiting) {
@@ -83,7 +57,7 @@ class HomePageState extends State<HomePage> {
             itemCount: snapshot.data?.length ?? 0,
             itemBuilder: (context, index) {
               return FutureBuilder<String>(
-                future: fetchImage(snapshot.data![index]),
+                future: apiService.fetchImage(snapshot.data![index]),
                 builder: (context, imageSnapshot) {
                   if (imageSnapshot.connectionState ==
                       ConnectionState.waiting) {
