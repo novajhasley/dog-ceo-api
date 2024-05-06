@@ -11,6 +11,13 @@ class ThemeLightState extends ThemeState {
       : super(ThemeData.light().copyWith(
           scaffoldBackgroundColor: const Color.fromARGB(255, 243, 240, 240),
           cardColor: Colors.white,
+          colorScheme: ThemeData.light().colorScheme.copyWith(
+                primary: Colors.blue,
+                secondary: Colors.green,
+              ),
+          textTheme: ThemeData.light().textTheme.apply(
+                fontFamily: 'YourFontFamily',
+              ),
         ));
 }
 
@@ -19,5 +26,12 @@ class ThemeDarkState extends ThemeState {
       : super(ThemeData.dark().copyWith(
           scaffoldBackgroundColor: Colors.black,
           cardColor: Colors.grey[900],
+          colorScheme: ThemeData.dark().colorScheme.copyWith(
+                primary: const Color.fromARGB(255, 206, 162, 241),
+                secondary: Colors.purple,
+              ),
+          textTheme: ThemeData.dark().textTheme.apply(
+                fontFamily: 'YourFontFamily',
+              ),
         ));
 }

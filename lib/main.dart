@@ -21,10 +21,7 @@ class MyApp extends StatelessWidget {
     return BlocBuilder<ThemeBloc, ThemeState>(
       builder: (themeContext, theme) {
         return MaterialApp(
-          theme: theme.themeData.copyWith(
-            colorScheme: theme.themeData.colorScheme
-                .copyWith(background: Colors.grey[700]),
-          ),
+          theme: theme.themeData,
           home: const NavBarHolder(),
         );
       },
