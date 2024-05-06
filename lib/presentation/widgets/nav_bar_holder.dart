@@ -1,5 +1,5 @@
 import 'package:dog_ceo_api/presentation/pages/home_page.dart';
-import 'package:dog_ceo_api/presentation/pages/info_page.dart';
+import 'package:dog_ceo_api/presentation/pages/prompt_page.dart';
 import 'package:dog_ceo_api/presentation/pages/settings_page.dart';
 import 'package:flutter/material.dart';
 
@@ -11,9 +11,9 @@ class NavBarHolder extends StatefulWidget {
 }
 
 class _NavBarHolderState extends State<NavBarHolder> {
-  int _selectedIndex = 0;
+  int _selectedIndex = 1;
   static const List<Widget> _widgetOptions = <Widget>[
-    InfoPage(),
+    PromptPage(),
     HomePage(),
     SettingsPage(),
   ];
@@ -34,7 +34,7 @@ class _NavBarHolderState extends State<NavBarHolder> {
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.info),
-            label: 'Info',
+            label: 'Prompt',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
