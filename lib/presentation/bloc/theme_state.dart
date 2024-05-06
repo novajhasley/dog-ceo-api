@@ -15,9 +15,6 @@ class ThemeLightState extends ThemeState {
                 primary: Colors.blue,
                 secondary: Colors.green,
               ),
-          textTheme: ThemeData.light().textTheme.apply(
-                fontFamily: 'YourFontFamily',
-              ),
         ));
 }
 
@@ -29,9 +26,6 @@ class ThemeDarkState extends ThemeState {
           colorScheme: ThemeData.dark().colorScheme.copyWith(
                 primary: const Color.fromARGB(255, 206, 162, 241),
                 secondary: Colors.purple,
-              ),
-          textTheme: ThemeData.dark().textTheme.apply(
-                fontFamily: 'YourFontFamily',
               ),
         ));
 }
