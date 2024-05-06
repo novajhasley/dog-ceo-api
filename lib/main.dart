@@ -1,8 +1,16 @@
+import 'package:dog_ceo_api/presentation/bloc/theme_bloc.dart';
+import 'package:dog_ceo_api/presentation/bloc/theme_state.dart';
 import 'package:dog_ceo_api/presentation/widgets/nav_bar_holder.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    BlocProvider(
+      create: (_) => ThemeBloc(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -10,8 +18,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: NavBarHolder(),
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (themeContext, theme) {
+        return MaterialApp(
+          theme: theme.themeData.copyWith(
+            colorScheme: theme.themeData.colorScheme
+                .copyWith(background: Colors.grey[700]),
+          ),
+          home: const NavBarHolder(),
+        );
+      },
     );
   }
 }

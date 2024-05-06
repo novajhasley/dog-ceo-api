@@ -39,7 +39,7 @@ class DogTile extends StatelessWidget {
                         EdgeInsets.fromLTRB(size.width * 0.2 - 10, 20, 15, 50),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
-                      color: Colors.white,
+                      color: Theme.of(context).cardColor,
                       boxShadow: const <BoxShadow>[
                         BoxShadow(
                           color: Colors.black12,

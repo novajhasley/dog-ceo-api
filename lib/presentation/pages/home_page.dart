@@ -16,7 +16,6 @@ class HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 243, 240, 240),
       appBar: AppBar(
         title: const Text(
           'Dog Breeds',
