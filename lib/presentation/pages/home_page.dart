@@ -15,6 +15,7 @@ class HomePageState extends State<HomePage> {
   final DogApiService apiService = DogApiService();
   final ValueNotifier<String> _searchQuery = ValueNotifier('');
   final ValueNotifier<bool> _isSearching = ValueNotifier(false);
+  final _searchFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class HomePageState extends State<HomePage> {
           builder: (context, isSearching, child) {
             return isSearching
                 ? TextField(
+                    focusNode: _searchFocusNode,
                     onChanged: (value) => _searchQuery.value = value,
                     decoration: const InputDecoration(
                       hintText: 'Search...',
@@ -39,7 +41,15 @@ class HomePageState extends State<HomePage> {
             builder: (context, isSearching, child) {
               return IconButton(
                 icon: Icon(isSearching ? Icons.close : Icons.search),
-                onPressed: () => _isSearching.value = !isSearching,
+                onPressed: () {
+                  if (!isSearching) {
+                    _searchFocusNode.requestFocus();
+                  } else {
+                    _searchQuery.value = '';
+                    _searchFocusNode.unfocus();
+                  }
+                  _isSearching.value = !isSearching;
+                },
               );
             },
           ),
@@ -67,7 +77,9 @@ class HomePageState extends State<HomePage> {
           //DOG BREEDS LIST
           else {
             return DogBreedsList(
-                searchQuery: _searchQuery, apiService: apiService, snapshot: snapshot);
+                searchQuery: _searchQuery,
+                apiService: apiService,
+                snapshot: snapshot);
           }
         },
       ),
