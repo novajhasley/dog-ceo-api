@@ -21,6 +21,7 @@ class HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: ValueListenableBuilder<bool>(
           valueListenable: _isSearching,
           builder: (context, isSearching, child) {

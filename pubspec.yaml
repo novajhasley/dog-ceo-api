@@ -40,6 +40,8 @@ dependencies:
   flutter_bloc: ^8.1.5
   mocktail: ^1.0.3
   bloc_test: ^9.1.7
+  integration_test:
+    sdk: flutter
 
 dev_dependencies:
   flutter_test:

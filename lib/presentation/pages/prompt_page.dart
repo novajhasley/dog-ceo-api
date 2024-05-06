@@ -7,7 +7,8 @@ class PromptPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Prompt Page'),
+        centerTitle: true,
+        title: const Text('Prompt'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
