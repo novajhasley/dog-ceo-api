@@ -14,7 +14,7 @@ class _NavBarHolderState extends State<NavBarHolder> {
   int _selectedIndex = 1;
   static List<Widget> widgetOptions = <Widget>[
     const PromptPage(),
-    HomePage(),
+    const HomePage(),
     const SettingsPage(),
   ];
 

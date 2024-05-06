@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 
 class PromptPage extends StatelessWidget {
-  const PromptPage({Key? key}) : super(key: key);
+  const PromptPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Prompt Page'),
+        title: const Text('Prompt Page'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: RichText(
           text: TextSpan(
             style: DefaultTextStyle.of(context).style,
-            children: <TextSpan>[
+            children: const <TextSpan>[
               TextSpan(
                   text: 'Objectives\n',
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
