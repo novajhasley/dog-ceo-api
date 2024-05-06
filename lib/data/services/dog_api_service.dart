@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 class DogApiService {
+  //API call to fetch dog breeds
   Future<List<String>> fetchDogBreeds() async {
     final response =
         await http.get(Uri.parse('https://dog.ceo/api/breeds/list/all'));
@@ -15,6 +16,7 @@ class DogApiService {
     }
   }
 
+  //API call to fetch dog breed image
   Future<String> fetchImage(String breed) async {
     final imageResponse = await http
         .get(Uri.parse('https://dog.ceo/api/breed/$breed/images/random'));
