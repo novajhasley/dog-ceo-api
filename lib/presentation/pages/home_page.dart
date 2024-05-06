@@ -4,26 +4,43 @@ import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
   @override
   HomePageState createState() => HomePageState();
 }
 
 class HomePageState extends State<HomePage> {
   final DogApiService apiService = DogApiService();
+  final ValueNotifier<String> _searchQuery = ValueNotifier('');
+  final ValueNotifier<bool> _isSearching = ValueNotifier(false);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Dog Breeds',
-          style: TextStyle(
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
-          ),
+        title: ValueListenableBuilder<bool>(
+          valueListenable: _isSearching,
+          builder: (context, isSearching, child) {
+            return isSearching
+                ? TextField(
+                    onChanged: (value) => _searchQuery.value = value,
+                    decoration: const InputDecoration(
+                      hintText: 'Search...',
+                    ),
+                  )
+                : const Text('Dog Breeds');
+          },
         ),
+        actions: <Widget>[
+          ValueListenableBuilder<bool>(
+            valueListenable: _isSearching,
+            builder: (context, isSearching, child) {
+              return IconButton(
+                icon: Icon(isSearching ? Icons.close : Icons.search),
+                onPressed: () => _isSearching.value = !isSearching,
+              );
+            },
+          ),
+        ],
       ),
       body: FutureBuilder<List<String>>(
         future: apiService.fetchDogBreeds(),
@@ -63,23 +80,33 @@ class HomePageState extends State<HomePage> {
           }
           //DOG BREEDS LIST
           else {
-            return ListView.builder(
-              itemCount: snapshot.data?.length ?? 0,
-              itemBuilder: (context, index) {
-                String breed = snapshot.data![index].replaceFirst(
-                    snapshot.data![index][0],
-                    snapshot.data![index][0].toUpperCase());
-                return FutureBuilder<String>(
-                  future: apiService.fetchImage(snapshot.data![index]),
-                  builder: (context, imageSnapshot) {
-                    if (imageSnapshot.connectionState ==
-                        ConnectionState.waiting) {
-                      return DogTile(breed: breed, image: '');
-                    } else if (imageSnapshot.hasError) {
-                      return DogTile(breed: breed, image: '');
-                    } else {
-                      return DogTile(breed: breed, image: imageSnapshot.data!);
-                    }
+            return ValueListenableBuilder<String>(
+              valueListenable: _searchQuery,
+              builder: (context, value, child) {
+                final results = snapshot.data!
+                    .where((dog) =>
+                        dog.toLowerCase().contains(value.toLowerCase()))
+                    .toList();
+
+                return ListView.builder(
+                  itemCount: results.length,
+                  itemBuilder: (context, index) {
+                    String breed = results[index].replaceFirst(
+                        results[index][0], results[index][0].toUpperCase());
+                    return FutureBuilder<String>(
+                      future: apiService.fetchImage(results[index]),
+                      builder: (context, imageSnapshot) {
+                        if (imageSnapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return DogTile(breed: breed, image: '');
+                        } else if (imageSnapshot.hasError) {
+                          return DogTile(breed: breed, image: '');
+                        } else {
+                          return DogTile(
+                              breed: breed, image: imageSnapshot.data!);
+                        }
+                      },
+                    );
                   },
                 );
               },

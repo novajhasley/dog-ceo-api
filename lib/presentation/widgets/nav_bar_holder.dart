@@ -12,10 +12,10 @@ class NavBarHolder extends StatefulWidget {
 
 class _NavBarHolderState extends State<NavBarHolder> {
   int _selectedIndex = 1;
-  static const List<Widget> _widgetOptions = <Widget>[
-    PromptPage(),
+  static List<Widget> widgetOptions = <Widget>[
+    const PromptPage(),
     HomePage(),
-    SettingsPage(),
+    const SettingsPage(),
   ];
 
   void _onItemTapped(int index) {
@@ -28,7 +28,7 @@ class _NavBarHolderState extends State<NavBarHolder> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: _widgetOptions.elementAt(_selectedIndex),
+        child: widgetOptions.elementAt(_selectedIndex),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
