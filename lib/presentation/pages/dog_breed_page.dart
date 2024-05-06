@@ -15,7 +15,16 @@ class DogBreedPageState extends State<DogBreedPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.breed),
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          title: Text(widget.breed,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_rounded),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
         body: Image.network(widget.image));
   }
