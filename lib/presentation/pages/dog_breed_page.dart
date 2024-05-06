@@ -26,6 +26,9 @@ class DogBreedPageState extends State<DogBreedPage> {
             },
           ),
         ),
-        body: Image.network(widget.image));
+        body: Hero(
+          tag: 'hero-$widget.breed',
+          child: Image.network(widget.image),
+        ));
   }
 }

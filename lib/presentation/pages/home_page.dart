@@ -76,10 +76,7 @@ class HomePageState extends State<HomePage> {
                         ConnectionState.waiting) {
                       return DogTile(breed: breed, image: '');
                     } else if (imageSnapshot.hasError) {
-                      return ListTile(
-                        leading: const Icon(Icons.error),
-                        title: Text(breed),
-                      );
+                      return DogTile(breed: breed, image: '');
                     } else {
                       return DogTile(breed: breed, image: imageSnapshot.data!);
                     }

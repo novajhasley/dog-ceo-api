@@ -31,46 +31,49 @@ class DogTile extends StatelessWidget {
             child: Stack(
               clipBehavior: Clip.none,
               children: <Widget>[
-                Container(
-                  constraints: const BoxConstraints(minHeight: 140),
-                  width: size.width * 0.95,
+                Hero(
+                  tag: 'hero-$breed',
                   child: Container(
-                    padding:
-                        EdgeInsets.fromLTRB(size.width * 0.2 - 10, 20, 15, 50),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(8),
-                      color: Theme.of(context).cardColor,
-                      boxShadow: const <BoxShadow>[
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 8,
-                          offset: Offset(0, 6),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        // DOG BREED NAME
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(right: 15.0, bottom: 8.0),
-                          child: Container(
-                            constraints: const BoxConstraints(
-                              maxHeight: 40,
-                            ),
-                            child: Text(
-                              breed,
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 15,
+                    constraints: const BoxConstraints(minHeight: 140),
+                    width: size.width * 0.95,
+                    child: Container(
+                      padding: EdgeInsets.fromLTRB(
+                          size.width * 0.2 - 10, 20, 15, 50),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        color: Theme.of(context).cardColor,
+                        boxShadow: const <BoxShadow>[
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 8,
+                            offset: Offset(0, 6),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          // DOG BREED NAME
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(right: 15.0, bottom: 8.0),
+                            child: Container(
+                              constraints: const BoxConstraints(
+                                maxHeight: 40,
+                              ),
+                              child: Text(
+                                breed,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 ),
