@@ -1,7 +1,8 @@
 import 'package:dog_ceo_api/data/services/dog_api_service.dart';
-import 'package:dog_ceo_api/presentation/widgets/dog_tile.dart';
+import 'package:dog_ceo_api/presentation/widgets/dog_breeds_list.dart';
+import 'package:dog_ceo_api/presentation/widgets/error_dialog.dart';
+import 'package:dog_ceo_api/presentation/widgets/loading_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -49,12 +50,7 @@ class HomePageState extends State<HomePage> {
         builder: (context, snapshot) {
           //LOADING SCREEN
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: SpinKitFadingCircle(
-                color: Colors.blue,
-                size: 50.0,
-              ),
-            );
+            return const LoadingScreen();
           }
           //ERROR DIALOG
           else if (snapshot.hasError) {
@@ -62,19 +58,7 @@ class HomePageState extends State<HomePage> {
               showDialog(
                 context: context,
                 builder: (context) {
-                  return AlertDialog(
-                    title: const Text('Oops!'),
-                    content: Text(
-                        'Sorry for the inconvenience. Error: ${snapshot.error}'),
-                    actions: <Widget>[
-                      TextButton(
-                        child: const Text('OK'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                      ),
-                    ],
-                  );
+                  return ErrorDialog(errorMessage: snapshot.error.toString());
                 },
               );
             });
@@ -82,37 +66,8 @@ class HomePageState extends State<HomePage> {
           }
           //DOG BREEDS LIST
           else {
-            return ValueListenableBuilder<String>(
-              valueListenable: _searchQuery,
-              builder: (context, value, child) {
-                final results = snapshot.data!
-                    .where((dog) =>
-                        dog.toLowerCase().contains(value.toLowerCase()))
-                    .toList();
-
-                return ListView.builder(
-                  itemCount: results.length,
-                  itemBuilder: (context, index) {
-                    String breed = results[index].replaceFirst(
-                        results[index][0], results[index][0].toUpperCase());
-                    return FutureBuilder<String>(
-                      future: apiService.fetchImage(results[index]),
-                      builder: (context, imageSnapshot) {
-                        if (imageSnapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return DogTile(breed: breed, image: '');
-                        } else if (imageSnapshot.hasError) {
-                          return DogTile(breed: breed, image: '');
-                        } else {
-                          return DogTile(
-                              breed: breed, image: imageSnapshot.data!);
-                        }
-                      },
-                    );
-                  },
-                );
-              },
-            );
+            return DogBreedsList(
+                searchQuery: _searchQuery, apiService: apiService, snapshot: snapshot);
           }
         },
       ),
